@@ -85,7 +85,7 @@ void UCoreFunctionLibrary::DrawDebugSphere(const FVector& centre, const float ra
 #endif
 }
 
-void UCoreFunctionLibrary::DrawDebugBox(const FVector& centre, const FVector& extent, const FRotator& rotation, const FColor& colour, const float duration)
+void UCoreFunctionLibrary::DrawDebugBox(const FVector& centre, const FVector& extent, const FRotator& rotation, const FColor colour, const float duration)
 {
 #if WITH_EDITOR || UE_BUILD_DEVELOPMENT
 	::DrawDebugBox(GetGameWorld(), centre, extent, FQuat(rotation), colour, false, duration);
