@@ -49,6 +49,15 @@ void USpellBase::Update(float deltaTime)
 	m_CooldownTimer -= deltaTime;
 }
 
+void USpellBase::OnOverlap(AActor* overlapActor, FVector spellOverlapLocation)
+{		
+	//Deal Damage
+
+	//Check if Dead
+
+	//Handle Effects
+}
+
 void USpellBase::OnHit(AActor* hitActor, FVector spellHitLocation)
 {
 	if (hitActor != nullptr && m_HitActors.Contains(hitActor) == false)

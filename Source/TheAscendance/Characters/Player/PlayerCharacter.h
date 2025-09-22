@@ -40,6 +40,8 @@ public:
 
 	UCameraComponent* GetCamera();
 
+	const virtual FVector GetCastStartForward() override;
+
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 protected:

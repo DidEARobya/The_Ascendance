@@ -30,6 +30,7 @@ public:
 
 	virtual void Update(float deltaTime) {};
 
+	virtual void OnOverlap(AActor* overlapActor, FVector spellOverlapLocation) {};
 	virtual void OnHit(AActor* hitActor, FVector spellHitLocation) {};
 	virtual void ProcessHit(FVector spellHitLocation) {};
 	virtual TArray<TObjectPtr<AActor>> GetHitActors() { return TArray<TObjectPtr<AActor>>(); };

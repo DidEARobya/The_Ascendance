@@ -74,7 +74,8 @@ public:
 	float ProjectileSize = 1.0f;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	bool IsAffectedByGravity = false;
-
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (ClampMin = "0.0", ClampMax = "1.0", ToolTip = "The projectiles gravity scale. 0 is no gravity, 1 is default.", EditCondition = "IsAffectedByGravity == true", EditConditionHides))
+	float GravityScale = 1.0f;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (ExcludeBaseStruct))
 	TArray<TInstancedStruct<FProjectileSpellModifier>> ProjectileSpellModifiers;
 };

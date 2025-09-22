@@ -23,6 +23,7 @@ public:
 
 	virtual void Update(float deltaTime) override;
 
+	virtual void OnOverlap(AActor* overlapActor, FVector spellOverlapLocation) override;
 	virtual void OnHit(AActor* hitActor, FVector spellHitLocation) override;
 	virtual void ProcessHit(FVector spellHitLocation) override;
 	virtual TArray<TObjectPtr<AActor>> GetHitActors() override;

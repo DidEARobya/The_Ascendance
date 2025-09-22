@@ -126,6 +126,11 @@ UCameraComponent* APlayerCharacter::GetCamera()
 	return m_Camera;
 }
 
+const FVector APlayerCharacter::GetCastStartForward()
+{
+	return m_Camera->GetForwardVector();
+}
+
 // Called when the game starts or when spawned
 void APlayerCharacter::BeginPlay()
 {

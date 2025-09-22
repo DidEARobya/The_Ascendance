@@ -5,6 +5,7 @@
 #include "TheAscendance/Core/CoreMacros.h"
 #include "Interfaces/SpellCaster.h"
 #include "Structs/SpellData.h"
+#include "TheAscendance/Actors/Projectile/Projectile.h"
 
 void UProjectileSpellBase::Init(USpellData* spellData, ISpellCaster* spellOwner)
 {
@@ -45,4 +46,25 @@ void UProjectileSpellBase::Fire(FVector direction)
 	USpellBase::Fire(direction);
 
 	LOG_ONSCREEN(-1, 1.0f, FColor::Cyan, "Projectile: Fire");
+
+	TObjectPtr<AActor> owner = m_SpellOwner->GetSpellOwner();
+
+	FActorSpawnParameters spawnParams;
+	spawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	AProjectile* projectile = owner->GetWorld()->SpawnActor<AProjectile>(AProjectile::StaticClass(), m_SpellOwner->GetCastStartLocation(), FRotator::ZeroRotator, spawnParams);
+
+	if (projectile == nullptr)
+	{
+		return;
+	}
+
+	projectile->Init(this, m_SpellData.Get());
+	projectile->AddIgnoreActor(owner);
+
+	//projectile->InitNiagara(spellData->spellNiagara);
+	//projectile->SetRange(spellData->range);
+
+	projectile->SetIsActive(true);
+	projectile->ApplyForce(direction);
 }
