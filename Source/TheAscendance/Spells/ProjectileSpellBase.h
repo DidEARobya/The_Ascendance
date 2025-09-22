@@ -23,5 +23,5 @@ public:
 	virtual void Fire(FVector direction) override;
 
 private:
-	TWeakObjectPtr<UProjectileSpellData> m_SpellData;
+	TWeakObjectPtr<UProjectileSpellData> m_SpellData = nullptr;
 };

@@ -71,6 +71,27 @@ void UCoreFunctionLibrary::LogError(FString string)
 	LOG_ERROR("%s", *string);
 }
 
+void UCoreFunctionLibrary::DrawDebugLine(const FVector& start, const FVector& end, const FColor colour, const float duration)
+{
+#if WITH_EDITOR || UE_BUILD_DEVELOPMENT
+	::DrawDebugLine(GetGameWorld(), start, end, colour, false, duration);
+#endif
+}
+
+void UCoreFunctionLibrary::DrawDebugSphere(const FVector& centre, const float radius, const int32 segments, const FColor colour, const float duration)
+{
+#if WITH_EDITOR || UE_BUILD_DEVELOPMENT
+	::DrawDebugSphere(GetGameWorld(), centre, radius, segments, colour, false, duration);
+#endif
+}
+
+void UCoreFunctionLibrary::DrawDebugBox(const FVector& centre, const FVector& extent, const FRotator& rotation, const FColor& colour, const float duration)
+{
+#if WITH_EDITOR || UE_BUILD_DEVELOPMENT
+	::DrawDebugBox(GetGameWorld(), centre, extent, FQuat(rotation), colour, false, duration);
+#endif
+}
+
 UDataHandlerSubsystem* UCoreFunctionLibrary::GetDataHandlerSubsystem()
 {
 	if (UWorld* world = GetGameWorld())
@@ -88,9 +109,38 @@ void UCoreFunctionLibrary::RequestAsyncLoad(const FSoftObjectPath& targetToStrea
 
 	if (delegate == nullptr)
 	{
-		UAssetManager::GetStreamableManager().RequestAsyncLoad(targetToStream);
+		UAssetManager::GetStreamableManager().RequestAsyncLoad(targetToStream, FStreamableDelegate::CreateLambda([targetToStream]()
+			{
+				UObject* loadedObject = targetToStream.ResolveObject();
+
+				if (loadedObject != nullptr)
+				{
+					LOG_INFO("Successful ASync Load for: %s", *targetToStream.ToString());
+				}
+				else
+				{
+					LOG_ERROR("Failed ASync Load for: %s", *targetToStream.ToString());
+				}
+
+			}));
+
 		return;
 	}
 
-	UAssetManager::GetStreamableManager().RequestAsyncLoad(targetToStream, FStreamableDelegate::CreateLambda(delegate));
+	UAssetManager::GetStreamableManager().RequestAsyncLoad(targetToStream, FStreamableDelegate::CreateLambda([delegate = MoveTemp(delegate), targetToStream]()
+		{
+			UObject* loadedObject = targetToStream.ResolveObject();
+
+			if (loadedObject != nullptr)
+			{
+				LOG_INFO("Successful ASync Load for: %s", *targetToStream.ToString());
+			}
+			else
+			{
+				LOG_ERROR("Failed ASync Load for: %s", *targetToStream.ToString());
+			}
+
+			delegate();
+		}
+	));
 }

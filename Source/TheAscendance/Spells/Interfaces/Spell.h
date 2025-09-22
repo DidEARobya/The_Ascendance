@@ -29,7 +29,10 @@ public:
 	virtual bool CastSpell() { return false; };
 
 	virtual void Update(float deltaTime) {};
-	virtual void ProcessHit(AActor* target, FVector location) {};
+
+	virtual void OnHit(AActor* hitActor, FVector spellHitLocation) {};
+	virtual void ProcessHit(FVector spellHitLocation) {};
+	virtual TArray<TObjectPtr<AActor>> GetHitActors() { return TArray<TObjectPtr<AActor>>(); };
 
 	virtual void Fire(FVector direction) {};
 

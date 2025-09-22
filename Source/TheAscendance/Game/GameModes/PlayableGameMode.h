@@ -37,7 +37,7 @@ protected:
 
 private:
 	UPROPERTY()
-	TObjectPtr<UItemLoader> m_ItemLoader;
+	TObjectPtr<UItemLoader> m_ItemLoader = nullptr;
 	UPROPERTY()
-	TObjectPtr<USpellLoader> m_SpellLoader;
+	TObjectPtr<USpellLoader> m_SpellLoader = nullptr;
 };

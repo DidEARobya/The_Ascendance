@@ -23,7 +23,10 @@ public:
 	virtual bool CastSpell() override;
 
 	virtual void Update(float deltaTime) override;
-	virtual void ProcessHit(AActor* target, FVector location) override;
+
+	virtual void OnHit(AActor* hitActor, FVector spellHitLocation) override;
+	virtual void ProcessHit(FVector spellHitLocation) override;
+	virtual TArray<TObjectPtr<AActor>> GetHitActors() override;
 
 	virtual void Fire(FVector direction) override;
 
@@ -31,5 +34,5 @@ public:
 
 protected:
 	UPROPERTY()
-	TScriptInterface<ISpell> m_DecoratedSpell;
+	TScriptInterface<ISpell> m_DecoratedSpell = nullptr;
 };

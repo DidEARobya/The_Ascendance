@@ -104,5 +104,5 @@ struct FSpellTableData : public FTableRowBase
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FString SpellDescription = "";
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	TSoftObjectPtr<USpellData> SpellData;
+	TSoftObjectPtr<USpellData> SpellData = nullptr;
 };

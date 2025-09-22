@@ -49,8 +49,28 @@ void USpellBase::Update(float deltaTime)
 	m_CooldownTimer -= deltaTime;
 }
 
-void USpellBase::ProcessHit(AActor* target, FVector location)
+void USpellBase::OnHit(AActor* hitActor, FVector spellHitLocation)
 {
+	if (hitActor != nullptr && m_HitActors.Contains(hitActor) == false)
+	{
+		m_HitActors.Add(hitActor);
+	}
+
+	ProcessHit(spellHitLocation);
+}
+
+void USpellBase::ProcessHit(FVector spellHitLocation)
+{
+	for (auto actor : m_HitActors)
+	{
+		//Deal Damage
+
+		//Check if Dead
+
+		//Handle Effects
+	}
+
+	m_HitActors.Empty();
 }
 
 void USpellBase::Fire(FVector direction)
@@ -67,4 +87,9 @@ ISpellCaster* USpellBase::GetSpellOwner()
 	}
 
 	return m_SpellOwner.GetInterface();
+}
+
+TArray<TObjectPtr<AActor>> USpellBase::GetHitActors()
+{
+	return m_HitActors;
 }

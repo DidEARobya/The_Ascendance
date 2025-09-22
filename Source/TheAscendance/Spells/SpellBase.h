@@ -22,16 +22,24 @@ public:
 	virtual bool CastSpell() override;
 
 	virtual void Update(float deltaTime) override;
-	virtual void ProcessHit(AActor* target, FVector location) override;
+
+	virtual void OnHit(AActor* hitActor, FVector spellHitLocation) override;
+	virtual void ProcessHit(FVector spellHitLocation) override;
+	virtual TArray<TObjectPtr<AActor>> GetHitActors() override;
 
 	virtual void Fire(FVector direction) override;
 
 	virtual ISpellCaster* GetSpellOwner() override;
+
+
 protected:
 	UPROPERTY()
-	TScriptInterface<ISpellCaster> m_SpellOwner;
+	TScriptInterface<ISpellCaster> m_SpellOwner = nullptr;
+
+	UPROPERTY()
+	TArray<TObjectPtr<AActor>> m_HitActors;
 
 private:
-	float m_Cooldown;
-	float m_CooldownTimer;
+	float m_Cooldown = 0.0f;
+	float m_CooldownTimer = 0.0f;
 };
