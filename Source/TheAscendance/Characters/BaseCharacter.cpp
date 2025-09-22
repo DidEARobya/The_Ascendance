@@ -7,6 +7,7 @@
 #include "TheAscendance/Items/HeldItem.h"
 #include "TheAscendance/Game/GameModes/PlayableGameMode.h"
 #include "TheAscendance/Core/CoreMacros.h"
+#include "TheAscendance/Spells/Interfaces/Spell.h"
 
 #include "GameFramework/CharacterMovementComponent.h"
 
@@ -190,6 +191,31 @@ void ABaseCharacter::EndOffHandAttack()
 	return m_OffHandItem->EndAttack();
 }
 
+AActor* ABaseCharacter::GetSpellOwner()
+{
+	return this;
+}
+
+const FVector ABaseCharacter::GetSpellOwnerLocation()
+{
+	return GetActorLocation();
+}
+
+const FVector ABaseCharacter::GetSpellOwnerForward()
+{
+	return GetActorForwardVector();
+}
+
+const FVector ABaseCharacter::GetCastStartLocation()
+{
+	return GetActorLocation();
+}
+
+const FVector ABaseCharacter::GetCastStartForward()
+{
+	return GetActorForwardVector();
+}
+
 void ABaseCharacter::TestFunction1()
 {
 	LOG_ONSCREEN(-1, 1.0f, FColor::Yellow, "TEST 1");
@@ -199,8 +225,19 @@ void ABaseCharacter::TestFunction1()
 void ABaseCharacter::TestFunction2()
 {
 	LOG_ONSCREEN(-1, 1.0f, FColor::Yellow, "TEST 2");
-	EndMainHandAttack();
-	EndOffHandAttack();
+	//EndMainHandAttack();
+	//EndOffHandAttack();
+
+	if (m_TestSpell == nullptr)
+	{
+		LOG_ONSCREEN(-1, 1.0f, FColor::Red, "TestSpell is invalid");
+		return;
+	}
+
+	if (m_TestSpell->CanCast() == true)
+	{
+		m_TestSpell->CastSpell();
+	}
 }
 
 void ABaseCharacter::TestFunction3()
@@ -279,6 +316,15 @@ void ABaseCharacter::BeginPlay()
 	m_CharacterStatsComponent->Init();
 
 	//Test
+
+	if (APlayableGameMode* gameMode = UCoreFunctionLibrary::GetPlayableGameMode())
+	{
+		if (ISpell* spell = gameMode->CreateSpellFromID(1, this))
+		{
+			m_TestSpell = spell->_getUObject();
+		}
+	}
+
 	m_TestEquipToggle = false;
 }
 

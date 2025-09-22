@@ -6,20 +6,22 @@
 #include "SpellBase.h"
 #include "ProjectileSpellBase.generated.h"
 
-/**
- * 
- */
+class UProjectileSpellData;
+
 UCLASS()
 class THEASCENDANCE_API UProjectileSpellBase : public USpellBase
 {
 	GENERATED_BODY()
 	
 public:
-	//virtual void Init() override;
-	//virtual bool CastSpell() override;
+	virtual void Init(USpellData* spellData, ISpellCaster* spellOwner) final;
+	virtual bool CastSpell() override;
 
 	//virtual void Update(float deltaTime) override;
 	//virtual void ProcessHit(AActor* target, FVector location) override;
 
 	virtual void Fire(FVector direction) override;
+
+private:
+	TWeakObjectPtr<UProjectileSpellData> m_SpellData;
 };

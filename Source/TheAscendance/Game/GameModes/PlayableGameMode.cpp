@@ -2,13 +2,15 @@
 
 
 #include "PlayableGameMode.h"
-#include "TheAscendance/Game/DataLoaders/ItemLoader.h"
 #include "TheAscendance/Core/CoreMacros.h"
+#include "TheAscendance/Game/DataLoaders/ItemLoader.h"
+#include "TheAscendance/Game/DataLoaders/SpellLoader.h"
 
 FItemData* APlayableGameMode::GetItemData(int id)
 {
 	if (m_ItemLoader == nullptr)
 	{
+		LOG_ERROR("PlayableGameMode has invalid ItemLoader");
 		return nullptr;
 	}
 
@@ -19,6 +21,7 @@ FWeaponData* APlayableGameMode::GetWeaponData(int id)
 {
 	if (m_ItemLoader == nullptr)
 	{
+		LOG_ERROR("PlayableGameMode has invalid ItemLoader");
 		return nullptr;
 	}
 
@@ -29,10 +32,22 @@ const FWeaponTypeData* APlayableGameMode::GetWeaponTypeData(EWeaponType type)
 {
 	if (m_ItemLoader == nullptr)
 	{
+		LOG_ERROR("PlayableGameMode has invalid ItemLoader");
 		return nullptr;
 	}
 
 	return m_ItemLoader->GetWeaponTypeData(type);
+}
+
+ISpell* APlayableGameMode::CreateSpellFromID(int spellID, ISpellCaster* spellOwner)
+{
+	if (m_SpellLoader == nullptr)
+	{
+		LOG_ERROR("PlayableGameMode has invalid SpellLoader");
+		return nullptr;
+	}
+
+	return m_SpellLoader->CreateSpellFromID(spellID, spellOwner);
 }
 
 void APlayableGameMode::InitGameState()
@@ -56,6 +71,14 @@ void APlayableGameMode::InitGameState()
 		LOG_ERROR("PlayableGameMode failed to create ItemLoader");
 	}
 
+	if (m_SpellLoader = NewObject<USpellLoader>())
+	{
+		m_SpellLoader->Init();
+	}
+	else
+	{
+		LOG_ERROR("PlayableGameMode failed to create SpellLoader");
+	}
 }
 
 void APlayableGameMode::StartPlay()

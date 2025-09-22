@@ -8,6 +8,7 @@
 #include "SpellBase.generated.h"
 
 class ISpellCaster;
+class USpellData;
 
 UCLASS(Abstract)
 class THEASCENDANCE_API USpellBase : public UObject, public ISpell
@@ -15,7 +16,9 @@ class THEASCENDANCE_API USpellBase : public UObject, public ISpell
 	GENERATED_BODY()
 	
 public:
-	virtual void Init() override;
+	virtual void Init(USpellData* spellData, ISpellCaster* spellOwner) override;
+
+	virtual bool CanCast() override;
 	virtual bool CastSpell() override;
 
 	virtual void Update(float deltaTime) override;
@@ -23,6 +26,7 @@ public:
 
 	virtual void Fire(FVector direction) override;
 
+	virtual ISpellCaster* GetSpellOwner() override;
 protected:
 	UPROPERTY()
 	TScriptInterface<ISpellCaster> m_SpellOwner;

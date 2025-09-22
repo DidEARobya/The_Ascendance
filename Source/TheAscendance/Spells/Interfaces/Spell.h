@@ -13,6 +13,9 @@ class USpell : public UInterface
 	GENERATED_BODY()
 };
 
+class USpellData;
+class ISpellCaster;
+
 class THEASCENDANCE_API ISpell
 {
 	GENERATED_BODY()
@@ -20,11 +23,15 @@ class THEASCENDANCE_API ISpell
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 
-	virtual void Init() = 0;
-	virtual bool CastSpell() = 0;
+	virtual void Init(USpellData* spellData, ISpellCaster* spellOwner) {};
 
-	virtual void Update(float deltaTime) = 0;
-	virtual void ProcessHit(AActor* target, FVector location) = 0;
+	virtual bool CanCast() { return false; };
+	virtual bool CastSpell() { return false; };
 
-	virtual void Fire(FVector direction) = 0;
+	virtual void Update(float deltaTime) {};
+	virtual void ProcessHit(AActor* target, FVector location) {};
+
+	virtual void Fire(FVector direction) {};
+
+	virtual ISpellCaster* GetSpellOwner() { return nullptr; };
 };

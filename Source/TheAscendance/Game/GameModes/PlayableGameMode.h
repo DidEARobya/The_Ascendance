@@ -7,6 +7,9 @@
 #include "TheAscendance/Items/Enums/WeaponType.h"
 #include "PlayableGameMode.generated.h"
 
+class USpellLoader;
+class ISpell;
+class ISpellCaster;
 class UItemLoader;
 struct FItemData;
 struct FWeaponData;
@@ -22,6 +25,8 @@ public:
 	FWeaponData* GetWeaponData(int itemID);
 	const FWeaponTypeData* GetWeaponTypeData(EWeaponType type);
 
+	ISpell* CreateSpellFromID(int spellID, ISpellCaster* spellOwner);
+
 	virtual void InitGameState() override;
 
 	virtual void StartPlay() override;
@@ -33,4 +38,6 @@ protected:
 private:
 	UPROPERTY()
 	TObjectPtr<UItemLoader> m_ItemLoader;
+	UPROPERTY()
+	TObjectPtr<USpellLoader> m_SpellLoader;
 };

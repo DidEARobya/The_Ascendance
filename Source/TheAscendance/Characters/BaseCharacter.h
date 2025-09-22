@@ -7,13 +7,15 @@
 #include "Interfaces/Susceptible.h"
 #include "Enums/CharacterStat.h"
 #include "TheAscendance/Items/Enums/WeaponType.h"
+#include "TheAscendance/Spells/Interfaces/SpellCaster.h"
 #include "BaseCharacter.generated.h"
 
 class UCharacterStatsComponent;
 class AHeldItem;
+class ISpell;
 
 UCLASS()
-class THEASCENDANCE_API ABaseCharacter : public ACharacter, public ISusceptible
+class THEASCENDANCE_API ABaseCharacter : public ACharacter, public ISusceptible, public ISpellCaster
 {
 	GENERATED_BODY()
 
@@ -57,6 +59,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void EndOffHandAttack();
 
+	virtual AActor* GetSpellOwner() override;
+	const virtual FVector GetSpellOwnerLocation() override;
+	const virtual FVector GetSpellOwnerForward() override;
+	const virtual FVector GetCastStartLocation() override;
+	const virtual FVector GetCastStartForward() override;
+
 	void TestFunction1();
 	void TestFunction2();
 	void TestFunction3();
@@ -80,6 +88,10 @@ private:
 	bool m_IsMainHandAttacking = false;
 	bool m_IsOffHandAttacking = false;
 	float m_AttackTimer = 0.0f;
+
+	//Test
+	UPROPERTY()
+	TScriptInterface<ISpell> m_TestSpell = nullptr;
 
 	bool m_TestEquipToggle = false;
 	bool m_AnimTest = false;

@@ -13,13 +13,12 @@ struct FGenericSpellModifier
 	GENERATED_BODY()
 
 	FGenericSpellModifier() : ModifierType(EGenericSpellModifierType::NONE) {};
-
 	FGenericSpellModifier(EGenericSpellModifierType modifierType) : ModifierType(modifierType) {};
 
 	EGenericSpellModifierType ModifierType = EGenericSpellModifierType::NONE;
 };
 
-USTRUCT(BlueprintType)
+USTRUCT(BlueprintType, meta = (ToolTip = "Applies a specified effect to the spell caster."))
 struct FApplyCasterEffectModifier : public FGenericSpellModifier
 {
 	GENERATED_BODY()
@@ -30,7 +29,7 @@ struct FApplyCasterEffectModifier : public FGenericSpellModifier
 	int EffectID = 0;
 };
 
-USTRUCT(BlueprintType)
+USTRUCT(BlueprintType, meta = (ToolTip = "Applies damage and effects to all valid actors within a specified ranged. This is instant and is separate from spawned AOEs. This is applied on hit with HitScan spells, when the projectile is destroyed with ProjectileSpells, and when casting LocalSpells."))
 struct FAreaOfEffectModifier : public FGenericSpellModifier
 {
 	GENERATED_BODY()
@@ -39,13 +38,13 @@ struct FAreaOfEffectModifier : public FGenericSpellModifier
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	float Range = 0.0f;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (ToolTip = "The damage applied by the AOE. Acts as the maximum value if HasDamageFallOff is true."))
 	int Damage = 0;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (ToolTip = "Damage is calculated using an interpolated value between 0 and the 'Range' value. 'DamageMinimum' clamps the minimum damage."))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (ToolTip = "Damage uses the 'Range', 'Damage' and 'DamageMinimum' values to calculate a damage fall-off."))
 	bool HasDamageFallOff = false;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (EditCondition = "HasDamageFallOff == true", EditConditionHides))
 	int DamageMinimum = 0;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (ToolTip = "Applies a knockback effect, separate to the KnockbackModifier."))
 	bool DoesKnockback = false;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (EditCondition = "DoesKnockback == true", EditConditionHides))
 	float KnockbackStrength = 0.0f;
@@ -59,13 +58,12 @@ struct FRangedSpellModifier
 	GENERATED_BODY()
 
 	FRangedSpellModifier() : ModifierType(ERangedSpellModifierType::NONE) {};
-
 	FRangedSpellModifier(ERangedSpellModifierType modifierType) : ModifierType(modifierType) {};
 
 	ERangedSpellModifierType ModifierType = ERangedSpellModifierType::NONE;
 };
 
-USTRUCT(BlueprintType)
+USTRUCT(BlueprintType, meta = (ToolTip = "Applies a knockback effect to the hit actor."))
 struct FKnockbackSpellModifier : public FRangedSpellModifier
 {
 	GENERATED_BODY()
@@ -84,20 +82,19 @@ struct FProjectileSpellModifier
 	GENERATED_BODY()
 
 	FProjectileSpellModifier() : ModifierType(EProjectileSpellModifierType::NONE) {};
-
 	FProjectileSpellModifier(EProjectileSpellModifierType modifierType) : ModifierType(modifierType) {};
 
 	EProjectileSpellModifierType ModifierType = EProjectileSpellModifierType::NONE;
 };
 
-USTRUCT(BlueprintType)
+USTRUCT(BlueprintType, meta = (ToolTip = "A modifier that allows a projectile to pass through hit characters."))
 struct FPenetrationSpellModifier : public FProjectileSpellModifier
 {
 	GENERATED_BODY()
 
 	FPenetrationSpellModifier() : FProjectileSpellModifier(EProjectileSpellModifierType::PENETRATION) {};
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (ToolTip = "The maximum amount of characters the projectile can pass through before being destroyed."))
 	int PenetrateLimit = 0;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	int DamageLossPerHit = 0;

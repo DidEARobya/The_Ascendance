@@ -21,10 +21,10 @@ public:
 	float SpellCooldown = 0.0f;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	int ManaCost = 0;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (ToolTip = "The Niagara for the spell itself. Applied to the projectile for ProjectileSpells and played when casting LocalSpells"))
 	TSoftObjectPtr<UNiagaraSystem> SpellNiagara = nullptr;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (ExcludeBaseStruct))
-	TArray<TInstancedStruct<FGenericSpellModifier>> SpellModifers;
+	TArray<TInstancedStruct<FGenericSpellModifier>> SpellModifiers;
 
 	ESpellType SpellType = ESpellType::PROJECTILE;
 };
@@ -54,7 +54,7 @@ public:
 	float Range = 0.0f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (ExcludeBaseStruct))
-	TArray<TInstancedStruct<FRangedSpellModifier>> RangedSpellModifers;
+	TArray<TInstancedStruct<FRangedSpellModifier>> RangedSpellModifiers;
 };
 
 UCLASS(BlueprintType)
@@ -76,7 +76,7 @@ public:
 	bool IsAffectedByGravity = false;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (ExcludeBaseStruct))
-	TArray<TInstancedStruct<FProjectileSpellModifier>> ProjectileSpellModifers;
+	TArray<TInstancedStruct<FProjectileSpellModifier>> ProjectileSpellModifiers;
 };
 
 UCLASS(BlueprintType)
