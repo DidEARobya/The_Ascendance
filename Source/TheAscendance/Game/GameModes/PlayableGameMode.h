@@ -7,6 +7,8 @@
 #include "TheAscendance/Items/Enums/WeaponType.h"
 #include "PlayableGameMode.generated.h"
 
+class UEnemyLoader;
+class ABaseEnemy;
 class USpellLoader;
 class ISpell;
 class ISpellCaster;
@@ -27,6 +29,8 @@ public:
 
 	ISpell* CreateSpellFromID(int spellID, ISpellCaster* spellOwner);
 
+	ABaseEnemy* CreateEnemyFromID(int enemyID);
+
 	virtual void InitGameState() override;
 
 	virtual void StartPlay() override;
@@ -40,4 +44,9 @@ private:
 	TObjectPtr<UItemLoader> m_ItemLoader = nullptr;
 	UPROPERTY()
 	TObjectPtr<USpellLoader> m_SpellLoader = nullptr;
+	UPROPERTY()
+	TObjectPtr<UEnemyLoader> m_EnemyLoader = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, meta = (DisplayName = "Enemy Default"))
+	TSubclassOf<ABaseEnemy> m_EnemyDefault;
 };

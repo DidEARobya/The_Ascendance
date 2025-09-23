@@ -5,13 +5,13 @@
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include "TheAscendance/Spells/Interfaces/Spell.h"
-#include "SpellBase.generated.h"
+#include "BaseSpell.generated.h"
 
 class ISpellCaster;
 class USpellData;
 
 UCLASS(Abstract)
-class THEASCENDANCE_API USpellBase : public UObject, public ISpell
+class THEASCENDANCE_API UBaseSpell : public UObject, public ISpell
 {
 	GENERATED_BODY()
 	

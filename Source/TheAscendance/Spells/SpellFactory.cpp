@@ -3,7 +3,7 @@
 
 #include "SpellFactory.h"
 #include "TheAscendance/Core/CoreMacros.h"
-#include "ProjectileSpellBase.h"
+#include "ProjectileSpell.h"
 #include "Structs/SpellData.h"
 #include "Structs/SpellModifierData.h"
 #include "Interfaces/Spell.h"
@@ -29,7 +29,7 @@ ISpell* SpellFactory::CreateSpell(USpellData* spellData, ISpellCaster* spellOwne
 	{
 		case ESpellType::PROJECTILE:
 		{
-			spell = NewObject<UProjectileSpellBase>();
+			spell = NewObject<UProjectileSpell>();
 			break;
 		}
 	}

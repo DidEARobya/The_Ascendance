@@ -1,11 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "SpellBase.h"
+#include "BaseSpell.h"
 #include "TheAscendance/Core/CoreMacros.h"
 #include "Interfaces/SpellCaster.h"
 
-void USpellBase::Init(USpellData* spellData, ISpellCaster* spellOwner)
+void UBaseSpell::Init(USpellData* spellData, ISpellCaster* spellOwner)
 {
 	if (spellData == nullptr || spellOwner == nullptr)
 	{
@@ -16,7 +16,7 @@ void USpellBase::Init(USpellData* spellData, ISpellCaster* spellOwner)
 	m_SpellOwner = spellOwner->_getUObject();
 }
 
-bool USpellBase::CanCast()
+bool UBaseSpell::CanCast()
 {
 	if (m_CooldownTimer > 0.0f)
 	{
@@ -26,7 +26,7 @@ bool USpellBase::CanCast()
 	return true;
 }
 
-bool USpellBase::CastSpell()
+bool UBaseSpell::CastSpell()
 {
 	if (m_CooldownTimer > 0.0f)
 	{
@@ -39,7 +39,7 @@ bool USpellBase::CastSpell()
 	return true;
 }
 
-void USpellBase::Update(float deltaTime)
+void UBaseSpell::Update(float deltaTime)
 {
 	if (m_Cooldown < 0)
 	{
@@ -49,7 +49,7 @@ void USpellBase::Update(float deltaTime)
 	m_CooldownTimer -= deltaTime;
 }
 
-void USpellBase::OnOverlap(AActor* overlapActor, FVector spellOverlapLocation)
+void UBaseSpell::OnOverlap(AActor* overlapActor, FVector spellOverlapLocation)
 {		
 	//Deal Damage
 
@@ -58,7 +58,7 @@ void USpellBase::OnOverlap(AActor* overlapActor, FVector spellOverlapLocation)
 	//Handle Effects
 }
 
-void USpellBase::OnHit(AActor* hitActor, FVector spellHitLocation)
+void UBaseSpell::OnHit(AActor* hitActor, FVector spellHitLocation)
 {
 	if (hitActor != nullptr && m_HitActors.Contains(hitActor) == false)
 	{
@@ -68,7 +68,7 @@ void USpellBase::OnHit(AActor* hitActor, FVector spellHitLocation)
 	ProcessHit(spellHitLocation);
 }
 
-void USpellBase::ProcessHit(FVector spellHitLocation)
+void UBaseSpell::ProcessHit(FVector spellHitLocation)
 {
 	for (auto actor : m_HitActors)
 	{
@@ -82,12 +82,12 @@ void USpellBase::ProcessHit(FVector spellHitLocation)
 	m_HitActors.Empty();
 }
 
-void USpellBase::Fire(FVector direction)
+void UBaseSpell::Fire(FVector direction)
 {
 	LOG_ONSCREEN(-1, 1.0f, FColor::Cyan, "Base: Fire");
 }
 
-ISpellCaster* USpellBase::GetSpellOwner()
+ISpellCaster* UBaseSpell::GetSpellOwner()
 {
 	if (m_SpellOwner == nullptr)
 	{
@@ -98,7 +98,7 @@ ISpellCaster* USpellBase::GetSpellOwner()
 	return m_SpellOwner.GetInterface();
 }
 
-TArray<TObjectPtr<AActor>> USpellBase::GetHitActors()
+TArray<TObjectPtr<AActor>> UBaseSpell::GetHitActors()
 {
 	return m_HitActors;
 }

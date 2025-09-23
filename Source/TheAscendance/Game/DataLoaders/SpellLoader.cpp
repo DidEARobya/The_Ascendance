@@ -2,8 +2,8 @@
 
 
 #include "SpellLoader.h"
-#include "TheAscendance/Core/CoreFunctionLibrary.h"
 #include "TheAscendance/Core/CoreMacros.h"
+#include "TheAscendance/Core/CoreFunctionLibrary.h"
 #include "TheAscendance/Game/Subsystems/DataHandlerSubsystem.h"
 #include "TheAscendance/Spells/SpellFactory.h"
 #include "TheAscendance/Spells/Structs/SpellData.h"

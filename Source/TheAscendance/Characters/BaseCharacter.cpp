@@ -2,14 +2,13 @@
 
 
 #include "BaseCharacter.h"
+#include "TheAscendance/Core/CoreMacros.h"
 #include "TheAscendance/Core/CoreFunctionLibrary.h"
 #include "Components/CharacterStatsComponent.h"
 #include "TheAscendance/Items/HeldItem.h"
-#include "TheAscendance/Game/GameModes/PlayableGameMode.h"
-#include "TheAscendance/Core/CoreMacros.h"
-#include "TheAscendance/Spells/Interfaces/Spell.h"
 
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Components/CapsuleComponent.h"
 
 // Sets default values
 ABaseCharacter::ABaseCharacter()
@@ -19,6 +18,11 @@ ABaseCharacter::ABaseCharacter()
 
 	m_CharacterStatsComponent = CreateDefaultSubobject<UCharacterStatsComponent>(TEXT("Character Stats Component"));
 	checkf(m_CharacterStatsComponent, TEXT("Character Stats Component failed to initialise"));
+
+	SetRootComponent(GetCapsuleComponent());
+
+	GetMesh()->SetCollisionProfileName(FName("NoCollision"));
+	GetMesh()->SetupAttachment(GetRootComponent());
 }
 
 void ABaseCharacter::Heal(int amount)
@@ -216,55 +220,10 @@ const FVector ABaseCharacter::GetCastStartForward()
 	return GetActorForwardVector();
 }
 
-void ABaseCharacter::TestFunction1()
-{
-	LOG_ONSCREEN(-1, 1.0f, FColor::Yellow, "TEST 1");
-	m_AnimTest = !m_AnimTest;
-}
-
-void ABaseCharacter::TestFunction2()
-{
-	LOG_ONSCREEN(-1, 1.0f, FColor::Yellow, "TEST 2");
-	//EndMainHandAttack();
-	//EndOffHandAttack();
-
-	if (m_TestSpell == nullptr)
-	{
-		LOG_ONSCREEN(-1, 1.0f, FColor::Red, "TestSpell is invalid");
-		return;
-	}
-
-	if (m_TestSpell->CanCast() == true)
-	{
-		m_TestSpell->CastSpell();
-	}
-}
-
-void ABaseCharacter::TestFunction3()
-{
-	LOG_ONSCREEN(-1, 1.0f, FColor::Yellow, "TEST 3");
-
-	if (m_TestEquipToggle == false)
-	{
-		if (APlayableGameMode* gameMode = UCoreFunctionLibrary::GetPlayableGameMode())
-		{
-			m_MainHandItem->Init(gameMode->GetItemData(2));
-		}
-	}
-	else
-	{
-		m_MainHandItem->UnEquip();
-	}
-
-	m_TestEquipToggle = !m_TestEquipToggle;
-}
-
 // Called every frame
 void ABaseCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	LOG_ONSCREEN(0, 1, FColor::Yellow, "USING ANIMATIONS: %s", m_AnimTest ? TEXT("TRUE") : TEXT("FALSE"));
 
 	if (m_AnimTest == false && IsAttacking() == true)
 	{
@@ -316,15 +275,6 @@ void ABaseCharacter::BeginPlay()
 	m_CharacterStatsComponent->Init();
 
 	//Test
-
-	if (APlayableGameMode* gameMode = UCoreFunctionLibrary::GetPlayableGameMode())
-	{
-		if (ISpell* spell = gameMode->CreateSpellFromID(1, this))
-		{
-			m_TestSpell = spell->_getUObject();
-		}
-	}
-
 	m_TestEquipToggle = false;
 }
 

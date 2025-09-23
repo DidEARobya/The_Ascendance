@@ -3,13 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "SpellBase.h"
-#include "ProjectileSpellBase.generated.h"
+#include "BaseSpell.h"
+#include "ProjectileSpell.generated.h"
 
 class UProjectileSpellData;
 
 UCLASS()
-class THEASCENDANCE_API UProjectileSpellBase : public USpellBase
+class THEASCENDANCE_API UProjectileSpell : public UBaseSpell
 {
 	GENERATED_BODY()
 	

@@ -1,15 +1,15 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "ProjectileSpellBase.h"
+#include "ProjectileSpell.h"
 #include "TheAscendance/Core/CoreMacros.h"
 #include "Interfaces/SpellCaster.h"
 #include "Structs/SpellData.h"
 #include "TheAscendance/Actors/Projectile/Projectile.h"
 
-void UProjectileSpellBase::Init(USpellData* spellData, ISpellCaster* spellOwner)
+void UProjectileSpell::Init(USpellData* spellData, ISpellCaster* spellOwner)
 {
-	USpellBase::Init(spellData, spellOwner);
+	UBaseSpell::Init(spellData, spellOwner);
 
 	if (spellData == nullptr || spellOwner == nullptr)
 	{
@@ -26,9 +26,9 @@ void UProjectileSpellBase::Init(USpellData* spellData, ISpellCaster* spellOwner)
 	}
 }
 
-bool UProjectileSpellBase::CastSpell()
+bool UProjectileSpell::CastSpell()
 {
-	if (USpellBase::CastSpell() == false)
+	if (UBaseSpell::CastSpell() == false)
 	{
 		return false;
 	}
@@ -41,9 +41,9 @@ bool UProjectileSpellBase::CastSpell()
 	return true;
 }
 
-void UProjectileSpellBase::Fire(FVector direction)
+void UProjectileSpell::Fire(FVector direction)
 {
-	USpellBase::Fire(direction);
+	UBaseSpell::Fire(direction);
 
 	LOG_ONSCREEN(-1, 1.0f, FColor::Cyan, "Projectile: Fire");
 

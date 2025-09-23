@@ -5,6 +5,7 @@
 #include "TheAscendance/Core/CoreMacros.h"
 #include "TheAscendance/Game/DataLoaders/ItemLoader.h"
 #include "TheAscendance/Game/DataLoaders/SpellLoader.h"
+#include "TheAscendance/Game/DataLoaders/EnemyLoader.h"
 
 FItemData* APlayableGameMode::GetItemData(int id)
 {
@@ -50,6 +51,17 @@ ISpell* APlayableGameMode::CreateSpellFromID(int spellID, ISpellCaster* spellOwn
 	return m_SpellLoader->CreateSpellFromID(spellID, spellOwner);
 }
 
+ABaseEnemy* APlayableGameMode::CreateEnemyFromID(int enemyID)
+{
+	if (m_EnemyLoader == nullptr)
+	{
+		LOG_ERROR("PlayableGameMode has invalid EnemyLoader");
+		return nullptr;
+	}
+
+	return m_EnemyLoader->CreateEnemyFromID(enemyID);
+}
+
 void APlayableGameMode::InitGameState()
 {
 	Super::InitGameState();
@@ -78,6 +90,16 @@ void APlayableGameMode::InitGameState()
 	else
 	{
 		LOG_ERROR("PlayableGameMode failed to create SpellLoader");
+	}
+
+	if (m_EnemyLoader = NewObject<UEnemyLoader>())
+	{
+		m_EnemyLoader->Init();
+		m_EnemyLoader->SetEnemyDefault(m_EnemyDefault);
+	}
+	else
+	{
+		LOG_ERROR("PlayableGameMode failed to create EnemyLoader");
 	}
 }
 

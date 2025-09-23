@@ -12,7 +12,6 @@
 
 class UCharacterStatsComponent;
 class AHeldItem;
-class ISpell;
 
 UCLASS()
 class THEASCENDANCE_API ABaseCharacter : public ACharacter, public ISusceptible, public ISpellCaster
@@ -65,10 +64,6 @@ public:
 	const virtual FVector GetCastStartLocation() override;
 	const virtual FVector GetCastStartForward() override;
 
-	void TestFunction1();
-	void TestFunction2();
-	void TestFunction3();
-
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 protected:
@@ -79,20 +74,17 @@ protected:
 	UPROPERTY(EditDefaultsOnly, meta = (DisplayName = "Character Stats Component"))
 	TObjectPtr<UCharacterStatsComponent> m_CharacterStatsComponent = nullptr;
 
-private:
+protected:
 	UPROPERTY()
 	TObjectPtr<AHeldItem> m_MainHandItem = nullptr;
 	UPROPERTY()
 	TObjectPtr<AHeldItem> m_OffHandItem = nullptr;
 
+	bool m_TestEquipToggle = false;
+	bool m_AnimTest = false;
+
+private:
 	bool m_IsMainHandAttacking = false;
 	bool m_IsOffHandAttacking = false;
 	float m_AttackTimer = 0.0f;
-
-	//Test
-	UPROPERTY()
-	TScriptInterface<ISpell> m_TestSpell = nullptr;
-
-	bool m_TestEquipToggle = false;
-	bool m_AnimTest = false;
 };
