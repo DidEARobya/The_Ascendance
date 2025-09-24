@@ -24,6 +24,7 @@ class THEASCENDANCE_API ISpell
 public:
 
 	virtual void Init(USpellData* spellData, ISpellCaster* spellOwner) {};
+	virtual void SetDecoratedSelf(ISpell* decoratedSelf) {};
 
 	virtual bool CanCast() { return false; };
 	virtual bool CastSpell() { return false; };
@@ -38,4 +39,9 @@ public:
 	virtual void Fire(FVector direction) {};
 
 	virtual ISpellCaster* GetSpellOwner() { return nullptr; };
+
+	virtual void ProcessOverlapDamage(int& damage) {};
+	virtual void ProcessHitDamage(int& damage, FVector targetLocation, FVector hitLocation) {};
+
+	virtual void DealDamage(AActor* hitActor, int damage) {};
 };

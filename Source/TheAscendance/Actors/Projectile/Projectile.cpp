@@ -91,6 +91,9 @@ void AProjectile::ApplyForce(FVector unitDirection)
 void AProjectile::HandleStaticActorHit(UPrimitiveComponent* hitComp, AActor* otherActor, UPrimitiveComponent* otherComp, FVector normalImpulse, const FHitResult& hit)
 {
 	LOG_ONSCREEN(-1, 1.0f, FColor::Yellow, "%s", *otherActor->GetName());
+
+	m_Spell->OnHit(otherActor, GetActorLocation());
+	m_Spell->ProcessHit(GetActorLocation());
 	Destroy();
 }
 
@@ -98,6 +101,12 @@ void AProjectile::OnHit(UPrimitiveComponent* hitComp, AActor* otherActor, UPrimi
 {
 	if (m_IsActive == false || otherActor == nullptr || otherActor == this || otherActor == m_IgnoredOwner)
 	{
+		return;
+	}
+
+	if (m_Spell == nullptr)
+	{
+		Destroy();
 		return;
 	}
 
@@ -113,14 +122,15 @@ void AProjectile::BeginOverlap(UPrimitiveComponent* overlappedComponent, AActor*
 
 	if (m_Spell == nullptr)
 	{
-		LOG_ONSCREEN(-1, 1.0f, FColor::Yellow, "WOW");
 		Destroy();
 		return;
 	}
 
 	LOG_ONSCREEN(-1, 1.0f, FColor::Yellow, "%s",*otherActor->GetName());
 
-	m_Spell->OnOverlap(otherActor, GetActorLocation());
+	m_Spell->OnHit(otherActor, GetActorLocation());
+	m_Spell->ProcessHit(GetActorLocation());
+
 	m_Spell = nullptr;
 	Destroy();
 

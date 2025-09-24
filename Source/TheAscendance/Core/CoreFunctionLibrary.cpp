@@ -146,7 +146,6 @@ void UCoreFunctionLibrary::RequestAsyncLoad(const TArray<FSoftObjectPath>& targe
 		LOG_WARNING("Requesting ASync Load for multiple items, but the array only contains one item. Consider using the single load alternative.");
 	}
 
-
 	for (const FSoftObjectPath& path : targetsToStream)
 	{
 		LOG_INFO("Requesting ASync Load for: %s", *path.ToString());

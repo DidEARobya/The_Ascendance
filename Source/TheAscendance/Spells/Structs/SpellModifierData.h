@@ -35,6 +35,7 @@ struct FAreaOfEffectModifier : public FGenericSpellModifier
 	GENERATED_BODY()
 
 	FAreaOfEffectModifier() : FGenericSpellModifier(EGenericSpellModifierType::AOE) {};
+	FAreaOfEffectModifier(const FAreaOfEffectModifier& modifierData) = default;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	float Range = 0.0f;

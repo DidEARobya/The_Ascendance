@@ -17,6 +17,7 @@ class THEASCENDANCE_API UBaseSpell : public UObject, public ISpell
 	
 public:
 	virtual void Init(USpellData* spellData, ISpellCaster* spellOwner) override;
+	virtual void SetDecoratedSelf(ISpell* decoratedSelf) override;
 
 	virtual bool CanCast() override;
 	virtual bool CastSpell() override;
@@ -32,7 +33,6 @@ public:
 
 	virtual ISpellCaster* GetSpellOwner() override;
 
-
 protected:
 	UPROPERTY()
 	TScriptInterface<ISpellCaster> m_SpellOwner = nullptr;
@@ -40,6 +40,8 @@ protected:
 	UPROPERTY()
 	TArray<TObjectPtr<AActor>> m_HitActors;
 
+	UPROPERTY()
+	TScriptInterface<ISpell> m_DecoratedSelf = nullptr;
 private:
 	float m_Cooldown = 0.0f;
 	float m_CooldownTimer = 0.0f;

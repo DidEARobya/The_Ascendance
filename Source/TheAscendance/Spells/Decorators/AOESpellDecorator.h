@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "SpellDecorator.h"
+#include "TheAscendance/Spells/Structs/SpellModifierData.h"
 #include "AOESpellDecorator.generated.h"
 
 UCLASS()
@@ -17,10 +18,12 @@ public:
 		TWeakObjectPtr<UAOESpellDecorator> m_Decorator = nullptr;
 
 	public:
-		Builder(ISpell* decorator)
+		Builder(ISpell* decorator, const FAreaOfEffectModifier& aoeData)
 		{
 			m_Decorator = NewObject<UAOESpellDecorator>();
 			m_Decorator->Decorate(decorator);
+
+			m_Decorator->m_AoeData = MakeShared<FAreaOfEffectModifier>(aoeData);
 		}
 		ISpell* Build()
 		{
@@ -34,8 +37,14 @@ public:
 		}
 	};
 
-	virtual bool CastSpell() override;
+	virtual void OnHit(AActor* hitActor, FVector spellHitLocation) override;
+	virtual void ProcessHit(FVector spellHitLocation) override;
+	virtual void ProcessHitDamage(int& damage, FVector targetLocation, FVector hitLocation) override;
 
 	//Test
+	virtual bool CastSpell() override;
 	virtual void Fire(FVector direction) override;
+
+private:
+	TSharedPtr<FAreaOfEffectModifier> m_AoeData = nullptr;
 };

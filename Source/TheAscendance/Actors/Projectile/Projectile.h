@@ -41,16 +41,16 @@ protected:
 
 private:	
 	UPROPERTY()
-	TObjectPtr<UStaticMeshComponent> m_StaticMeshComponent;
+	TObjectPtr<UStaticMeshComponent> m_StaticMeshComponent = nullptr;
 	UPROPERTY()
-	TObjectPtr<USphereComponent> m_Collider;
+	TObjectPtr<USphereComponent> m_Collider = nullptr;
 	UPROPERTY()
-	TObjectPtr<UProjectileMovementComponent> m_MovementComponent;
+	TObjectPtr<UProjectileMovementComponent> m_MovementComponent = nullptr;
 
 	UPROPERTY()
-	TScriptInterface<ISpell> m_Spell;
+	TScriptInterface<ISpell> m_Spell = nullptr;
 
-	TWeakObjectPtr<UProjectileSpellData> m_SpellData;
+	TWeakObjectPtr<UProjectileSpellData> m_SpellData = nullptr;
 
 	TWeakObjectPtr<AActor> m_IgnoredOwner = nullptr;
 

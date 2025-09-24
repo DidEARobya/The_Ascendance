@@ -14,11 +14,22 @@ void USpellDecorator::Decorate(ISpell* decorator)
 	m_DecoratedSpell = decorator->_getUObject();
 }
 
+void USpellDecorator::SetDecoratedSelf(ISpell* decoratedSelf)
+{
+	if (m_DecoratedSpell == nullptr)
+	{
+		LOG_ERROR("Spell decorator has invalid DecoratedSpell pointer");
+		return;
+	}
+
+	return m_DecoratedSpell->SetDecoratedSelf(decoratedSelf);
+}
+
 bool USpellDecorator::CanCast()
 {
 	if (m_DecoratedSpell == nullptr)
 	{
-		LOG_ERROR("Spell decorater has invalid DecoratedSpell pointer");
+		LOG_ERROR("Spell decorator has invalid DecoratedSpell pointer");
 		return false;
 	}
 
@@ -29,7 +40,7 @@ bool USpellDecorator::CastSpell()
 {
 	if (m_DecoratedSpell == nullptr)
 	{
-		LOG_ERROR("Spell decorater has invalid DecoratedSpell pointer");
+		LOG_ERROR("Spell decorator has invalid DecoratedSpell pointer");
 		return false;
 	}
 
@@ -40,18 +51,29 @@ void USpellDecorator::Update(float deltaTime)
 {
 	if (m_DecoratedSpell == nullptr)
 	{
-		LOG_ERROR("Spell decorater has invalid DecoratedSpell pointer");
+		LOG_ERROR("Spell decorator has invalid DecoratedSpell pointer");
 		return;
 	}
 
 	m_DecoratedSpell->Update(deltaTime);
 }
 
+void USpellDecorator::OnOverlap(AActor* overlapActor, FVector spellOverlapLocation)
+{
+	if (m_DecoratedSpell == nullptr)
+	{
+		LOG_ERROR("Spell decorator has invalid DecoratedSpell pointer");
+		return;
+	}
+
+	m_DecoratedSpell->OnOverlap(overlapActor, spellOverlapLocation);
+}
+
 void USpellDecorator::OnHit(AActor* hitActor, FVector spellHitLocation)
 {
 	if (m_DecoratedSpell == nullptr)
 	{
-		LOG_ERROR("Spell decorater has invalid DecoratedSpell pointer");
+		LOG_ERROR("Spell decorator has invalid DecoratedSpell pointer");
 		return;
 	}
 
@@ -62,7 +84,7 @@ void USpellDecorator::ProcessHit(FVector spellHitLocation)
 {
 	if (m_DecoratedSpell == nullptr)
 	{
-		LOG_ERROR("Spell decorater has invalid DecoratedSpell pointer");
+		LOG_ERROR("Spell decorator has invalid DecoratedSpell pointer");
 		return;
 	}
 
@@ -73,7 +95,7 @@ TArray<TObjectPtr<AActor>> USpellDecorator::GetHitActors()
 {
 	if (m_DecoratedSpell == nullptr)
 	{
-		LOG_ERROR("Spell decorater has invalid DecoratedSpell pointer");
+		LOG_ERROR("Spell decorator has invalid DecoratedSpell pointer");
 		return TArray<TObjectPtr<AActor>>();
 	}
 
@@ -85,7 +107,7 @@ void USpellDecorator::Fire(FVector direction)
 {
 	if (m_DecoratedSpell == nullptr)
 	{
-		LOG_ERROR("Spell decorater has invalid DecoratedSpell pointer");
+		LOG_ERROR("Spell decorator has invalid DecoratedSpell pointer");
 		return;
 	}
 
@@ -96,9 +118,43 @@ ISpellCaster* USpellDecorator::GetSpellOwner()
 {
 	if (m_DecoratedSpell == nullptr)
 	{
-		LOG_ERROR("Spell decorater has invalid DecoratedSpell pointer");
+		LOG_ERROR("Spell decorator has invalid DecoratedSpell pointer");
 		return nullptr;
 	}
 
 	return m_DecoratedSpell->GetSpellOwner();
 }
+
+void USpellDecorator::ProcessOverlapDamage(int& damage)
+{
+	if (m_DecoratedSpell == nullptr)
+	{
+		LOG_ERROR("Spell decorator has invalid DecoratedSpell pointer");
+		return;
+	}
+
+	m_DecoratedSpell->ProcessOverlapDamage(damage);
+}
+
+void USpellDecorator::ProcessHitDamage(int& damage, FVector targetLocation, FVector hitLocation)
+{
+	if (m_DecoratedSpell == nullptr)
+	{
+		LOG_ERROR("Spell decorator has invalid DecoratedSpell pointer");
+		return;
+	}
+
+	m_DecoratedSpell->ProcessHitDamage(damage, targetLocation, hitLocation);
+}
+
+void USpellDecorator::DealDamage(AActor* hitActor, int damage)
+{
+	if (m_DecoratedSpell == nullptr)
+	{
+		LOG_ERROR("Spell decorator has invalid DecoratedSpell pointer");
+		return;
+	}
+
+	m_DecoratedSpell->DealDamage(hitActor, damage);
+}
+

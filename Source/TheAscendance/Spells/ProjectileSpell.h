@@ -15,12 +15,14 @@ class THEASCENDANCE_API UProjectileSpell : public UBaseSpell
 	
 public:
 	virtual void Init(USpellData* spellData, ISpellCaster* spellOwner) final;
+
 	virtual bool CastSpell() override;
-
-	//virtual void Update(float deltaTime) override;
-	//virtual void ProcessHit(AActor* target, FVector location) override;
-
 	virtual void Fire(FVector direction) override;
+
+	virtual void ProcessOverlapDamage(int& damage) override;
+	virtual void ProcessHitDamage(int& damage, FVector targetLocation, FVector hitLocation) override;
+
+	virtual void DealDamage(AActor* hitActor, int damage) override;
 
 private:
 	TWeakObjectPtr<UProjectileSpellData> m_SpellData = nullptr;

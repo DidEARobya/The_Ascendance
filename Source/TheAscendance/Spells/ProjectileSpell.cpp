@@ -6,6 +6,7 @@
 #include "Interfaces/SpellCaster.h"
 #include "Structs/SpellData.h"
 #include "TheAscendance/Actors/Projectile/Projectile.h"
+#include "TheAscendance/Characters/Interfaces/Susceptible.h"
 
 void UProjectileSpell::Init(USpellData* spellData, ISpellCaster* spellOwner)
 {
@@ -45,9 +46,13 @@ void UProjectileSpell::Fire(FVector direction)
 {
 	UBaseSpell::Fire(direction);
 
-	LOG_ONSCREEN(-1, 1.0f, FColor::Cyan, "Projectile: Fire");
+	if (m_DecoratedSelf == nullptr)
+	{
+		LOG_ERROR("Tried to Fire Projectile with invalid DecoratedSelf");
+		return;
+	}
 
-	TObjectPtr<AActor> owner = m_SpellOwner->GetSpellOwner();
+	AActor* owner = m_SpellOwner->GetSpellOwner();
 
 	FActorSpawnParameters spawnParams;
 	spawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
@@ -59,7 +64,7 @@ void UProjectileSpell::Fire(FVector direction)
 		return;
 	}
 
-	projectile->Init(this, m_SpellData.Get());
+	projectile->Init(m_DecoratedSelf.GetInterface(), m_SpellData.Get());
 	projectile->AddIgnoreActor(owner);
 
 	//projectile->InitNiagara(spellData->spellNiagara);
@@ -67,4 +72,27 @@ void UProjectileSpell::Fire(FVector direction)
 
 	projectile->SetIsActive(true);
 	projectile->ApplyForce(direction);
+}
+
+void UProjectileSpell::ProcessOverlapDamage(int& damage)
+{
+	damage += m_SpellData->HitDamage;
+}
+
+void UProjectileSpell::ProcessHitDamage(int& damage, FVector targetLocation, FVector hitLocation)
+{
+	damage += m_SpellData->HitDamage;
+}
+
+void UProjectileSpell::DealDamage(AActor* hitActor, int damage)
+{
+	if (ISusceptible* target = Cast<ISusceptible>(hitActor))
+	{
+		target->Damage(damage);
+
+		if (target->IsDead() == true)
+		{
+			return;
+		}
+	}
 }

@@ -18,12 +18,14 @@ class THEASCENDANCE_API USpellDecorator : public UObject, public ISpell
 	
 public:
 	void Decorate(ISpell* decorator);
+	virtual void SetDecoratedSelf(ISpell* decoratedSelf) override;
 
 	virtual bool CanCast() override;
 	virtual bool CastSpell() override;
 
 	virtual void Update(float deltaTime) override;
 
+	virtual void OnOverlap(AActor* overlapActor, FVector spellOverlapLocation) override;
 	virtual void OnHit(AActor* hitActor, FVector spellHitLocation) override;
 	virtual void ProcessHit(FVector spellHitLocation) override;
 	virtual TArray<TObjectPtr<AActor>> GetHitActors() override;
@@ -31,6 +33,11 @@ public:
 	virtual void Fire(FVector direction) override;
 
 	virtual ISpellCaster* GetSpellOwner() override;
+
+	virtual void ProcessOverlapDamage(int& damage) override;
+	virtual void ProcessHitDamage(int& damage, FVector targetLocation, FVector hitLocation) override;
+
+	virtual void DealDamage(AActor* hitActor, int damage) override;
 
 protected:
 	UPROPERTY()

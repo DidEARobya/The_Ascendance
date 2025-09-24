@@ -16,6 +16,17 @@ void UBaseSpell::Init(USpellData* spellData, ISpellCaster* spellOwner)
 	m_SpellOwner = spellOwner->_getUObject();
 }
 
+void UBaseSpell::SetDecoratedSelf(ISpell* decoratedSelf)
+{
+	if (decoratedSelf == nullptr)
+	{
+		LOG_ERROR("Tried to set Spell DecoratedSelf with invalid spell");
+		return;
+	}
+
+	m_DecoratedSelf = decoratedSelf->_getUObject();
+}
+
 bool UBaseSpell::CanCast()
 {
 	if (m_CooldownTimer > 0.0f)
@@ -51,10 +62,14 @@ void UBaseSpell::Update(float deltaTime)
 
 void UBaseSpell::OnOverlap(AActor* overlapActor, FVector spellOverlapLocation)
 {		
-	//Deal Damage
+	LOG_ONSCREEN(-1, 5.0f, FColor::Green, "OnOverlap");
+
+	int damage = 0;
+	m_DecoratedSelf->ProcessOverlapDamage(damage);
+
+	DealDamage(overlapActor, damage);
 
 	//Check if Dead
-
 	//Handle Effects
 }
 
@@ -64,21 +79,22 @@ void UBaseSpell::OnHit(AActor* hitActor, FVector spellHitLocation)
 	{
 		m_HitActors.Add(hitActor);
 	}
-
-	ProcessHit(spellHitLocation);
 }
 
 void UBaseSpell::ProcessHit(FVector spellHitLocation)
 {
 	for (auto actor : m_HitActors)
 	{
-		//Deal Damage
+		int damage = 0;
+		m_DecoratedSelf->ProcessHitDamage(damage, actor->GetActorLocation(), spellHitLocation);
+
+		DealDamage(actor, damage);
 
 		//Check if Dead
-
 		//Handle Effects
 	}
 
+	//Play Sounds/VFX
 	m_HitActors.Empty();
 }
 

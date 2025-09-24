@@ -42,6 +42,7 @@ void ABaseCharacter::Damage(int amount)
 		return;
 	}
 
+	LOG_ONSCREEN(-1, 1.0f, FColor::Yellow, "%s took %i damage", *GetFName().ToString(), amount);
 	m_CharacterStatsComponent->AdjustStatByValue(ECharacterStat::HEALTH, -amount);
 }
 
@@ -63,6 +64,11 @@ int ABaseCharacter::GetStat(ECharacterStat stat)
 	}
 
 	return m_CharacterStatsComponent->GetStatAsValue(stat);
+}
+
+bool ABaseCharacter::IsDead()
+{
+	return GetStat(ECharacterStat::HEALTH) <= 0.0f;
 }
 
 bool ABaseCharacter::MainHandPrimaryAttack()

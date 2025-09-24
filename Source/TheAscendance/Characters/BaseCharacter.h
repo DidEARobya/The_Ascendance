@@ -26,6 +26,7 @@ public:
 	virtual void Damage(int amount) override;
 	virtual void ReduceStamina(int amount) override;
 	virtual int GetStat(ECharacterStat stat) override;
+	virtual bool IsDead() override;
 
 	bool MainHandPrimaryAttack();
 	bool MainHandSecondaryAttack();

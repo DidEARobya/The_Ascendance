@@ -54,7 +54,15 @@ ISpell* SpellFactory::CreateSpell(USpellData* spellData, ISpellCaster* spellOwne
 		{
 			case EGenericSpellModifierType::AOE:
 			{
-				spell = UAOESpellDecorator::Builder(spell.GetInterface()).Build()->_getUObject();
+				if (modifier.GetScriptStruct() != FAreaOfEffectModifier::StaticStruct())
+				{
+					LOG_ERROR("A GenericSpellModifierType struct with type AOE isn't of type AreaOfEffectModifier");
+					continue;
+				}
+
+				const FAreaOfEffectModifier& aoeModifier = modifier.Get<FAreaOfEffectModifier>();
+				spell = UAOESpellDecorator::Builder(spell.GetInterface(), aoeModifier).Build()->_getUObject();
+
 				break;
 			}
 
@@ -127,5 +135,6 @@ ISpell* SpellFactory::CreateSpell(USpellData* spellData, ISpellCaster* spellOwne
 		}
 	}
 
+	spell->SetDecoratedSelf(spell.GetInterface());
 	return spell.GetInterface();
 }

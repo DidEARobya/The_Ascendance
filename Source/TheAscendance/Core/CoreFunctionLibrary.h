@@ -25,7 +25,6 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Core")
 	static APlayerCharacter* GetPlayerCharacter();
-
 	UFUNCTION(BlueprintCallable, Category = "Core")
 	static ATAPlayerController* GetPlayerController();
 
