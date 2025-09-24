@@ -6,9 +6,8 @@
 #include "SpellDecorator.h"
 #include "PenetrationSpellDecorator.generated.h"
 
-/**
- * 
- */
+struct FPenetrationSpellModifier;
+
 UCLASS()
 class THEASCENDANCE_API UPenetrationSpellDecorator : public USpellDecorator
 {
@@ -20,10 +19,12 @@ public:
 		TWeakObjectPtr<UPenetrationSpellDecorator> m_Decorator = nullptr;
 
 	public:
-		Builder(ISpell* decorator)
+		Builder(ISpell* decorator, const FPenetrationSpellModifier& modifierData)
 		{
 			m_Decorator = NewObject<UPenetrationSpellDecorator>();
 			m_Decorator->Decorate(decorator);
+
+			m_Decorator->m_ModifierData = MakeShared<FPenetrationSpellModifier>(modifierData);
 		}
 		ISpell* Build()
 		{
@@ -37,8 +38,12 @@ public:
 		}
 	};
 
-	virtual bool CastSpell() override;
+	virtual void DecorateProjectile(IProjectile* projectile) override;
 
 	//Test
+	virtual bool CastSpell() override;
 	virtual void Fire(FVector direction) override;
+
+private:
+	TSharedPtr<FPenetrationSpellModifier> m_ModifierData = nullptr;
 };

@@ -7,7 +7,7 @@ void USpellDecorator::Decorate(ISpell* decorator)
 {
 	if (decorator == nullptr)
 	{
-		LOG_ERROR("Tried to decorate with invalid decorator");
+		LOG_ERROR("Tried to decorate Spell with invalid decorator");
 		return;
 	}
 
@@ -58,7 +58,7 @@ void USpellDecorator::Update(float deltaTime)
 	m_DecoratedSpell->Update(deltaTime);
 }
 
-void USpellDecorator::OnOverlap(AActor* overlapActor, FVector spellOverlapLocation)
+void USpellDecorator::OnOverlap(AActor* overlapActor, FVector spellOverlapLocation, int damage)
 {
 	if (m_DecoratedSpell == nullptr)
 	{
@@ -66,7 +66,7 @@ void USpellDecorator::OnOverlap(AActor* overlapActor, FVector spellOverlapLocati
 		return;
 	}
 
-	m_DecoratedSpell->OnOverlap(overlapActor, spellOverlapLocation);
+	m_DecoratedSpell->OnOverlap(overlapActor, spellOverlapLocation, damage);
 }
 
 void USpellDecorator::OnHit(AActor* hitActor, FVector spellHitLocation)
@@ -156,5 +156,16 @@ void USpellDecorator::DealDamage(AActor* hitActor, int damage)
 	}
 
 	m_DecoratedSpell->DealDamage(hitActor, damage);
+}
+
+void USpellDecorator::DecorateProjectile(IProjectile* projectile)
+{
+	if (m_DecoratedSpell == nullptr)
+	{
+		LOG_ERROR("Spell decorator has invalid DecoratedSpell pointer");
+		return;
+	}
+
+	m_DecoratedSpell->DecorateProjectile(projectile);
 }
 

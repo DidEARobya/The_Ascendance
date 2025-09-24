@@ -60,13 +60,9 @@ void UBaseSpell::Update(float deltaTime)
 	m_CooldownTimer -= deltaTime;
 }
 
-void UBaseSpell::OnOverlap(AActor* overlapActor, FVector spellOverlapLocation)
+void UBaseSpell::OnOverlap(AActor* overlapActor, FVector spellOverlapLocation, int damage)
 {		
 	LOG_ONSCREEN(-1, 5.0f, FColor::Green, "OnOverlap");
-
-	int damage = 0;
-	m_DecoratedSelf->ProcessOverlapDamage(damage);
-
 	DealDamage(overlapActor, damage);
 
 	//Check if Dead

@@ -94,6 +94,7 @@ struct FPenetrationSpellModifier : public FProjectileSpellModifier
 	GENERATED_BODY()
 
 	FPenetrationSpellModifier() : FProjectileSpellModifier(EProjectileSpellModifierType::PENETRATION) {};
+	FPenetrationSpellModifier(const FPenetrationSpellModifier& modifierData) = default;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (ToolTip = "The maximum amount of characters the projectile can pass through before being destroyed."))
 	int PenetrateLimit = 0;

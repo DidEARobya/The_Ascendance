@@ -25,7 +25,7 @@ public:
 
 	virtual void Update(float deltaTime) override;
 
-	virtual void OnOverlap(AActor* overlapActor, FVector spellOverlapLocation) override;
+	virtual void OnOverlap(AActor* overlapActor, FVector spellOverlapLocation, int damage) override;
 	virtual void OnHit(AActor* hitActor, FVector spellHitLocation) override;
 	virtual void ProcessHit(FVector spellHitLocation) override;
 	virtual TArray<TObjectPtr<AActor>> GetHitActors() override;
@@ -38,6 +38,8 @@ public:
 	virtual void ProcessHitDamage(int& damage, FVector targetLocation, FVector hitLocation) override;
 
 	virtual void DealDamage(AActor* hitActor, int damage) override;
+
+	virtual void DecorateProjectile(IProjectile* projectile) override;
 
 protected:
 	UPROPERTY()

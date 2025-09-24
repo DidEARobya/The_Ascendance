@@ -13,7 +13,7 @@ void UAOESpellDecorator::OnHit(AActor* hitActor, FVector spellHitLocation)
 {
 	m_DecoratedSpell->OnHit(hitActor, spellHitLocation);
 
-	if (m_AoeData == nullptr)
+	if (m_ModifierData == nullptr)
 	{
 		return;
 	}
@@ -33,9 +33,9 @@ void UAOESpellDecorator::OnHit(AActor* hitActor, FVector spellHitLocation)
 
 	TArray<AActor*> targets;
 
-	UCoreFunctionLibrary::DrawDebugSphere(spellHitLocation, m_AoeData->Range, 16, FColor::Yellow);
+	UCoreFunctionLibrary::DrawDebugSphere(spellHitLocation, m_ModifierData->Range, 16, FColor::Yellow);
 
-	if (UKismetSystemLibrary::SphereOverlapActors(owner->GetWorld(), spellHitLocation, m_AoeData->Range, types, NULL, ignore, targets))
+	if (UKismetSystemLibrary::SphereOverlapActors(owner->GetWorld(), spellHitLocation, m_ModifierData->Range, types, NULL, ignore, targets))
 	{
 		for (TObjectPtr<AActor> a : targets)
 		{
@@ -46,7 +46,7 @@ void UAOESpellDecorator::OnHit(AActor* hitActor, FVector spellHitLocation)
 
 void UAOESpellDecorator::ProcessHit(FVector spellHitLocation)
 {
-	if (m_AoeData->DoesKnockback == false)
+	if (m_ModifierData->DoesKnockback == false)
 	{
 		m_DecoratedSpell->ProcessHit(spellHitLocation);
 		return;
@@ -59,10 +59,10 @@ void UAOESpellDecorator::ProcessHit(FVector spellHitLocation)
 		knockbackDirection.Z = FMath::Max(knockbackDirection.Z, 0.5f);
 
 		float distance = FVector::Distance(actor->GetActorLocation(), spellHitLocation);
-		float normalizedDistance = distance / m_AoeData->Range;
+		float normalizedDistance = distance / m_ModifierData->Range;
 
-		float knockbackStrength = m_AoeData->KnockbackStrength - (m_AoeData->KnockbackStrength - 0.0f) * normalizedDistance * normalizedDistance;
-		knockbackStrength = FMath::Clamp(knockbackStrength, 0.0f, m_AoeData->KnockbackStrength);
+		float knockbackStrength = m_ModifierData->KnockbackStrength - (m_ModifierData->KnockbackStrength - 0.0f) * normalizedDistance * normalizedDistance;
+		knockbackStrength = FMath::Clamp(knockbackStrength, 0.0f, m_ModifierData->KnockbackStrength);
 
 		if (ACharacter* character = Cast<ACharacter>(actor))
 		{
@@ -86,18 +86,18 @@ void UAOESpellDecorator::ProcessHit(FVector spellHitLocation)
 
 void UAOESpellDecorator::ProcessHitDamage(int& damage, FVector targetLocation, FVector hitLocation)
 {
-	if (m_AoeData->HasDamageFallOff == false)
+	if (m_ModifierData->HasDamageFallOff == false)
 	{
-		damage += m_AoeData->Damage;
+		damage += m_ModifierData->Damage;
 		return;
 	}
 
 	float distance = FVector::Distance(targetLocation, hitLocation);
 
-	float normalizedDistance = distance / m_AoeData->Range;
-	float damageWithFalloff = m_AoeData->Damage - (m_AoeData->Damage - m_AoeData->DamageMinimum) * normalizedDistance * normalizedDistance;
+	float normalizedDistance = distance / m_ModifierData->Range;
+	float damageWithFalloff = m_ModifierData->Damage - (m_ModifierData->Damage - m_ModifierData->DamageMinimum) * normalizedDistance * normalizedDistance;
 
-	damageWithFalloff = FMath::Clamp(damageWithFalloff, m_AoeData->DamageMinimum, m_AoeData->Damage);
+	damageWithFalloff = FMath::Clamp(damageWithFalloff, m_ModifierData->DamageMinimum, m_ModifierData->Damage);
 
 	damage += damageWithFalloff;
 }

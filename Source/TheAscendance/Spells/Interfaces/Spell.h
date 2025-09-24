@@ -15,6 +15,7 @@ class USpell : public UInterface
 
 class USpellData;
 class ISpellCaster;
+class IProjectile;
 
 class THEASCENDANCE_API ISpell
 {
@@ -31,7 +32,7 @@ public:
 
 	virtual void Update(float deltaTime) {};
 
-	virtual void OnOverlap(AActor* overlapActor, FVector spellOverlapLocation) {};
+	virtual void OnOverlap(AActor* overlapActor, FVector spellOverlapLocation, int damage) {};
 	virtual void OnHit(AActor* hitActor, FVector spellHitLocation) {};
 	virtual void ProcessHit(FVector spellHitLocation) {};
 	virtual TArray<TObjectPtr<AActor>> GetHitActors() { return TArray<TObjectPtr<AActor>>(); };
@@ -44,4 +45,6 @@ public:
 	virtual void ProcessHitDamage(int& damage, FVector targetLocation, FVector hitLocation) {};
 
 	virtual void DealDamage(AActor* hitActor, int damage) {};
+	virtual void DecorateProjectile(IProjectile* projectile) {};
+
 };

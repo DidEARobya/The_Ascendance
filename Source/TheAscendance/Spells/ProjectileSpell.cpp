@@ -5,8 +5,9 @@
 #include "TheAscendance/Core/CoreMacros.h"
 #include "Interfaces/SpellCaster.h"
 #include "Structs/SpellData.h"
-#include "TheAscendance/Actors/Projectile/Projectile.h"
+#include "TheAscendance/Actors/Projectile/BaseProjectile.h"
 #include "TheAscendance/Characters/Interfaces/Susceptible.h"
+#include "TheAscendance/Actors/Projectile/Interfaces/Projectile.h"
 
 void UProjectileSpell::Init(USpellData* spellData, ISpellCaster* spellOwner)
 {
@@ -57,7 +58,7 @@ void UProjectileSpell::Fire(FVector direction)
 	FActorSpawnParameters spawnParams;
 	spawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-	AProjectile* projectile = owner->GetWorld()->SpawnActor<AProjectile>(AProjectile::StaticClass(), m_SpellOwner->GetCastStartLocation(), FRotator::ZeroRotator, spawnParams);
+	ABaseProjectile* projectile = owner->GetWorld()->SpawnActor<ABaseProjectile>(ABaseProjectile::StaticClass(), m_SpellOwner->GetCastStartLocation(), FRotator::ZeroRotator, spawnParams);
 
 	if (projectile == nullptr)
 	{
@@ -66,6 +67,7 @@ void UProjectileSpell::Fire(FVector direction)
 
 	projectile->Init(m_DecoratedSelf.GetInterface(), m_SpellData.Get());
 	projectile->AddIgnoreActor(owner);
+	m_DecoratedSelf->DecorateProjectile(projectile);
 
 	//projectile->InitNiagara(spellData->spellNiagara);
 	//projectile->SetRange(spellData->range);
@@ -95,4 +97,9 @@ void UProjectileSpell::DealDamage(AActor* hitActor, int damage)
 			return;
 		}
 	}
+}
+
+void UProjectileSpell::DecorateProjectile(IProjectile* projectile)
+{
+	projectile->SetDecoratedSelf(projectile);
 }

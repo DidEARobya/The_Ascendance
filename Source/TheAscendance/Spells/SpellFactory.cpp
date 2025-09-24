@@ -125,7 +125,14 @@ ISpell* SpellFactory::CreateSpell(USpellData* spellData, ISpellCaster* spellOwne
 
 						case EProjectileSpellModifierType::PENETRATION:
 						{
-							spell = UPenetrationSpellDecorator::Builder(spell.GetInterface()).Build()->_getUObject();
+							if (modifier.GetScriptStruct() != FPenetrationSpellModifier::StaticStruct())
+							{
+								LOG_ERROR("A ProjectileSpellModifierType struct with type PENETRATION isn't of type PenetrationSpellModifier");
+								continue;
+							}
+
+							const FPenetrationSpellModifier& penetrationModifier = modifier.Get<FPenetrationSpellModifier>();
+							spell = UPenetrationSpellDecorator::Builder(spell.GetInterface(), penetrationModifier).Build()->_getUObject();
 							break;
 						}
 					}

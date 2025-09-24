@@ -18,12 +18,12 @@ public:
 		TWeakObjectPtr<UAOESpellDecorator> m_Decorator = nullptr;
 
 	public:
-		Builder(ISpell* decorator, const FAreaOfEffectModifier& aoeData)
+		Builder(ISpell* decorator, const FAreaOfEffectModifier& modifierData)
 		{
 			m_Decorator = NewObject<UAOESpellDecorator>();
 			m_Decorator->Decorate(decorator);
 
-			m_Decorator->m_AoeData = MakeShared<FAreaOfEffectModifier>(aoeData);
+			m_Decorator->m_ModifierData = MakeShared<FAreaOfEffectModifier>(modifierData);
 		}
 		ISpell* Build()
 		{
@@ -46,5 +46,5 @@ public:
 	virtual void Fire(FVector direction) override;
 
 private:
-	TSharedPtr<FAreaOfEffectModifier> m_AoeData = nullptr;
+	TSharedPtr<FAreaOfEffectModifier> m_ModifierData = nullptr;
 };
